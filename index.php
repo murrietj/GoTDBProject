@@ -292,5 +292,132 @@ $stmt->close();
       </fieldset>
   </fieldset>
 
+  <fieldset id="RegRelFS">
+      <table>
+        <caption>Region/Religion Relationships</caption>
+        <thead>
+          <tr>
+            <th>Region</th>
+            <th>Religion</th>
+          </tr>
+        </thead>
+        <tbody>
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT reg.name, rel.name FROM region_religion rr
+                              INNER JOIN region reg ON rr.region_id = reg.id
+                              INNER JOIN religion rel ON rr.religion_id = rel.id"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($region, $religion)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<tr>\n<td>" . $region . "</td>\n<td>" . $religion . "</td>\n</tr>\n";
+}
+$stmt->close();
+?>
+
+        </tbody>
+      </table>
+      <fieldset>
+        <legend>Add</legend>
+        <form method="post" action="addRegRel.php"> 
+          <p>Region: <select name="region">
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT id, name FROM region"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($id, $name)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<option value='". $id . "'>". $name . "</option>\n";
+}
+$stmt->close();
+?>
+
+          </select></p>
+          <p>Religion: <select name="religion">
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT id, name FROM religion"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($id, $name)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<option value='". $id . "'>". $name . "</option>\n";
+}
+$stmt->close();
+?>
+
+          </select></p>
+          <p><input type="submit" value="Add"/></p>
+        </form>
+      </fieldset>
+
+      <fieldset>
+        <legend>Delete</legend>
+        <form method="post" action="deleteRegRel.php"> 
+          <p>Region: <select name="region">
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT id, name FROM region"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($id, $name)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<option value='". $id . "'>". $name . "</option>\n";
+}
+$stmt->close();
+?>
+
+          </select></p>
+          <p>Religion: <select name="religion">
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT id, name FROM religion"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($id, $name)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<option value='". $id . "'>". $name . "</option>\n";
+}
+$stmt->close();
+?>
+
+          </select></p>
+          <p><input type="submit" value="Delete" /></p>
+        </form>
+      </fieldset>
+
+  </fieldset>
   </body>
 </html>
