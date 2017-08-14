@@ -1,0 +1,52 @@
+h1{
+    text-align: center;
+}
+
+fieldset{
+    border: 2px solid black;
+}
+
+#CharacterFS{
+    background-color: lightseagreen;
+}
+
+#HouseFS{
+    background-color: plum;
+}
+
+#RegionFS{
+    background-color: steelblue;
+}
+
+#ReligionFS{
+    background-color: wheat;
+}
+
+table, th, td{
+    border: 1px solid black;
+}
+table{
+    margin-left:auto;
+    margin-right:auto;
+    font-size: 14pt;
+    background-color: black;
+}
+
+legend{
+    font-size: 18pt;
+}
+
+caption{
+    font-size: 20pt;
+}
+
+thead{
+    background-color: lightsalmon;
+}
+tbody tr:nth-of-type(odd){
+    background-color: lightgreen;
+}
+
+tbody tr:nth-of-type(even){
+    background-color: lightblue;
+}

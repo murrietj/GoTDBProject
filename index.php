@@ -11,17 +11,23 @@ if($mysqli->connect_errno){
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
+  <head>
+    <meta charset="utf-8">
+    <title>GoT DB Project</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+  </head>
   <body>
-    <fieldset>
+    <fieldset id="CharacterFS">
       <table>
-        <tr>
-          <th>Characters</th>
-        </tr>
-        <tr>
-          <td>First Name</td>
-          <td>Last Name</td>
-          <td>House</td>
-        </tr>
+        <caption>Characters</th>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>House</th>
+          </tr>
+        </thead>
+        <tbody>
 
 <?php
 if(!($stmt = $mysqli->prepare("SELECT characters.first_name, characters.last_name, house.name FROM characters INNER JOIN house ON characters.house = house.id"))){
@@ -40,6 +46,7 @@ while($stmt->fetch()){
 $stmt->close();
 ?>
 
+        </tbody>
       </table>
       <fieldset>
         <legend>Add</legend>
@@ -148,16 +155,17 @@ $stmt->close();
 
     </fieldset>
 
-    <fieldset>
+    <fieldset id="HouseFS">
       <table>
-        <tr>
-          <th>Houses</th>
-        </tr>
-        <tr>
-          <td>Name</td>
-          <td>Sigil</td>
-          <td>Region</td>
-        </tr>
+        <caption>Houses</caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Sigil</th>
+            <th>Region</th>
+          </tr>
+        </thead>
+        <tbody>
 
 <?php
 if(!($stmt = $mysqli->prepare("SELECT house.name, house.sigil, region.name FROM house INNER JOIN region ON house.region = region.id"))){
@@ -176,6 +184,7 @@ while($stmt->fetch()){
 $stmt->close();
 ?>
 
+        </tbody>
       </table>
       <fieldset>
         <legend>Add</legend>
@@ -207,14 +216,15 @@ $stmt->close();
       </fieldset>
     </fieldset>
 
-    <fieldset>
+    <fieldset id="RegionFS">
       <table>
-        <tr>
-          <th>Regions</th>
-        </tr>
-        <tr>
-          <td>Name</td>
-        </tr>
+        <caption>Regions</caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
 
 <?php
 if(!($stmt = $mysqli->prepare("SELECT name FROM region"))){
@@ -233,6 +243,7 @@ while($stmt->fetch()){
 $stmt->close();
 ?>
 
+        </tbody>
       </table>
       <fieldset>
         <legend>Add</legend>
@@ -243,14 +254,15 @@ $stmt->close();
       </fieldset>
   </fieldset>
 
-  <fieldset>
+  <fieldset id="ReligionFS">
       <table>
-        <tr>
-          <th>Religions</th>
-        </tr>
-        <tr>
-          <td>Name</td>
-        </tr>
+        <caption>Religions</caption>
+        <thead>
+          <tr>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
 
 <?php
 if(!($stmt = $mysqli->prepare("SELECT name FROM religion"))){
@@ -269,6 +281,7 @@ while($stmt->fetch()){
 $stmt->close();
 ?>
 
+        </tbody>
       </table>
       <fieldset>
         <legend>Add</legend>
