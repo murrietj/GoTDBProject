@@ -7,10 +7,10 @@ if(!$mysqli || $mysqli->connect_errno){
 	echo "Connection error " . $mysqli->connect_errno . " " . $mysqli->connect_error;
 	}
 	
-if(!($stmt = $mysqli->prepare("INSERT INTO region(name) VALUES (?)"))){
+if(!($stmt = $mysqli->prepare("INSERT INTO region(name, capital) VALUES (?,?)"))){
 	echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
-if(!($stmt->bind_param("s",$_POST['name']))){
+if(!($stmt->bind_param("ss",$_POST['name'],$_POST['capital']))){
 	echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
 }
 if(!$stmt->execute()){

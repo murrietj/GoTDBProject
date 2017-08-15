@@ -222,23 +222,24 @@ $stmt->close();
         <thead>
           <tr>
             <th>Name</th>
+			<th>Capital</th>
           </tr>
         </thead>
         <tbody>
 
 <?php
-if(!($stmt = $mysqli->prepare("SELECT name FROM region"))){
+if(!($stmt = $mysqli->prepare("SELECT name, capital FROM region"))){
   echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
 
 if(!$stmt->execute()){
   echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
-if(!$stmt->bind_result($name)){
+if(!$stmt->bind_result($name, $capital)){
   echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 while($stmt->fetch()){
-  echo "<tr>\n<td>" . $name . "</td>\n</tr>\n";
+  echo "<tr>\n<td>" . $name . "</td>\n<td>" . $capital . "</td>\n</tr>\n";
 }
 $stmt->close();
 ?>
@@ -248,11 +249,70 @@ $stmt->close();
       <fieldset>
         <legend>Add</legend>
         <form method="post" action="addRegion.php"> 
-          <p>Name: <input type="text" name="name" /></p>
+          <p>Region name: <input type="text" name="name" /></p>
+		  <p>Capital: <input type="text" name="capital" /></p>
           <p><input type="submit" value="Add"/></p>
         </form>
       </fieldset>
-  </fieldset>
+
+  
+	<fieldset>
+        <legend>Update</legend>
+        <form method="post" action="updateRegion.php"> 
+          <p>Region name: <select name="regionName">
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT id, name FROM region"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($id, $rname)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<option value='". $id . "'>" . $rname . "</option>\n";
+}
+$stmt->close();
+?>
+
+          </select></p>
+          <p>Capital: <input type="text" name="capital" /></p>
+
+          </select></p>
+          <p><input type="submit" value="Update" /></p>
+        </form>
+      </fieldset>
+	  
+	  <fieldset>
+        <legend>Delete</legend>
+        <form method="post" action="deleteRegion.php"> 
+          <p>Region name: <select name="name">
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT id, name FROM region"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($id, $name)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<option value='". $id . "'>" . $name . "</option>\n";
+}
+$stmt->close();
+?>
+
+          </select></p>
+          <p><input type="submit" value="Delete" /></p>
+        </form>
+      </fieldset>
+	</fieldset>
 
   <fieldset id="ReligionFS">
       <table>
