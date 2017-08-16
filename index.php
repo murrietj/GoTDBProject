@@ -170,6 +170,32 @@ $stmt->close();
           <p><input type="submit" value="Delete" /></p>
         </form>
       </fieldset>
+	  
+	  <fieldset>
+	  <legend>Filter Characters By House</legend>
+		<form method="post" action="filterHouse.php">
+			
+				<select name="House">
+					<?php
+					if(!($stmt = $mysqli->prepare("SELECT id, name FROM house"))){
+						echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+					}
+
+					if(!$stmt->execute()){
+						echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+					}
+					if(!$stmt->bind_result($id, $house)){
+						echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+					}
+					while($stmt->fetch()){
+					 echo '<option value=" '. $id . ' "> ' . $house . '</option>\n';
+					}
+					$stmt->close();
+					?>
+				</select>
+		<p><input type="submit" value="Run Filter" /></p>
+	</form>
+	</fieldset>
 
     </fieldset>
   
@@ -495,6 +521,33 @@ $stmt->close();
           <p><input type="submit" value="Add"/></p>
         </form>
       </fieldset>
+	  
+	  <fieldset>
+        <legend>Delete</legend>
+        <form method="post" action="deleteReligion.php">
+        <p>Name: <select name="delReligion">
+	  
+	  
+<?php
+if(!($stmt = $mysqli->prepare("SELECT id, name  FROM religion"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($id, $name)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<option value='". $id . "'>". $name . "</option>\n";
+}
+$stmt->close();
+?>
+			</select></p>
+          <p><input type="submit" value="Delete" /></p>
+        </form>
+      </fieldset>
   </fieldset>
 
   <fieldset id="RegRelFS">
@@ -606,5 +659,7 @@ $stmt->close();
       </fieldset>
 
   </fieldset>
+  
+  
   </body>
 </html>
