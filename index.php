@@ -24,27 +24,26 @@ if($mysqli->connect_errno){
           <tr>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Gender</th>
             <th>House</th>
-			<th>Spouse</th>
           </tr>
         </thead>
         <tbody>
 
 <?php
-if(!($stmt = $mysqli->prepare("SELECT c1.first_name, c1.last_name, h.name, c2.first_name FROM characters c1 
-								LEFT JOIN characters c2 ON c1.spouse = c2.id OR c1.id = c2.spouse
-								INNER JOIN house h ON c1.house = h.id"))){
+if(!($stmt = $mysqli->prepare("SELECT first_name, last_name, gender, name FROM characters
+								INNER JOIN house ON characters.house = house.id"))){
   echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
 
 if(!$stmt->execute()){
   echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
-if(!$stmt->bind_result($first_name, $last_name, $house, $spouse)){
+if(!$stmt->bind_result($first_name, $last_name, $gender, $house)){
   echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 while($stmt->fetch()){
-  echo "<tr>\n<td>" . $first_name . "</td>\n<td>" . $last_name . "</td>\n<td>" . $house . "</td>\n<td>" . $spouse . "</td>\n</tr>\n";
+  echo "<tr>\n<td>" . $first_name . "</td>\n<td>" . $last_name . "</td>\n<td>" . $gender . "</td>\n<td>" . $house . "</td>\n</tr>\n";
 }
 $stmt->close();
 ?>
@@ -56,6 +55,10 @@ $stmt->close();
         <form method="post" action="addChar.php"> 
           <p>First Name: <input type="text" name="FirstName" /></p>
           <p>Last Name: <input type="text" name="LastName" /></p>
+          <p>Gender: <select name="Gender">
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+          </select></p>
           <p>House: <select name="House">
 
 <?php
@@ -105,6 +108,11 @@ $stmt->close();
           </select></p>
           <p>First Name: <input type="text" name="FirstName" /></p>
           <p>Last Name: <input type="text" name="LastName" /></p>
+          <p>Gender: <select name="Gender">
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+          </select></p>
+
           <p>House: <select name="House">
 
 <?php
@@ -157,6 +165,117 @@ $stmt->close();
       </fieldset>
 
     </fieldset>
+  
+  <fieldset id="MarriagesFS">
+      <table>
+        <caption>Marriages</caption>
+        <thead>
+          <tr>
+            <th>Husband</th>
+            <th>Wife</th>
+          </tr>
+        </thead>
+        <tbody>
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT h.first_name, h.last_name, w.first_name, w.last_name FROM marriages m
+                              INNER JOIN characters h ON m.husband_id = h.id
+                              INNER JOIN characters w ON m.wife_id = w.id"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($h_fname, $h_lname, $w_fname, $w_lname)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<tr>\n<td>" . $h_fname . " " . $h_lname . "</td>\n<td>" . $w_fname . " " . $w_lname . "</td>\n</tr>\n";
+}
+$stmt->close();
+?>
+
+        </tbody>
+      </table>
+      <fieldset>
+        <legend>Add</legend>
+        <form method="post" action="addMarriage.php"> 
+          <p>Husband: <select name="husband">
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT id, first_name, last_name FROM characters WHERE gender='M'"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($id, $fname, $lname)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<option value='". $id . "'>". $fname . " " . $lname . "</option>\n";
+}
+$stmt->close();
+?>
+
+          </select></p>
+          <p>Wife: <select name="wife">
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT id, first_name, last_name FROM characters WHERE gender='F'"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($id, $fname, $lname)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<option value='". $id . "'>" . $fname . " " . $lname . "</option>\n";
+}
+$stmt->close();
+
+?>
+
+          </select></p>
+          <p><input type="submit" value="Add"/></p>
+        </form>
+      </fieldset>
+
+      <fieldset>
+        <legend>Delete</legend>
+        <form method="post" action="deleteMarriage.php"> 
+          <p>Marriage: <select name="marriage">
+
+<?php
+if(!($stmt = $mysqli->prepare("SELECT m.id, h.first_name, h.last_name, w.first_name, w.last_name FROM marriages m
+                              INNER JOIN characters h ON m.husband_id = h.id
+                              INNER JOIN characters w ON m.wife_id = w.id"))){
+  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+
+if(!$stmt->execute()){
+  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+if(!$stmt->bind_result($id, $h_fname, $h_lname, $w_fname, $w_lname)){
+  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+while($stmt->fetch()){
+  echo "<option value ='" . $id . "'>" . $h_fname . " " . $h_lname . " & " . $w_fname . " " . $w_lname . "</option>\n";
+}
+$stmt->close();
+?>
+
+          </select></p>
+          <p><input type="submit" value="Delete" /></p>
+        </form>
+      </fieldset>
+
+  </fieldset>
 
     <fieldset id="HouseFS">
       <table>
@@ -357,7 +476,7 @@ $stmt->close();
 
   <fieldset id="RegRelFS">
       <table>
-        <caption>Region/Religion Relationships</caption>
+        <caption>Religions found in Regions</caption>
         <thead>
           <tr>
             <th>Region</th>
@@ -436,42 +555,24 @@ $stmt->close();
 
       <fieldset>
         <legend>Delete</legend>
-        <form method="post" action="deleteRegRel.php"> 
-          <p>Region: <select name="region">
+        <form method="post" action="deleteRegRel.php">
+        <p>Religion in Region: <select name="regRel">
 
 <?php
-if(!($stmt = $mysqli->prepare("SELECT id, name FROM region"))){
+if(!($stmt = $mysqli->prepare("SELECT rr.id, reg.name, rel.name FROM region_religion rr
+                              INNER JOIN region reg ON rr.region_id = reg.id
+                              INNER JOIN religion rel ON rr.religion_id = rel.id"))){
   echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
 
 if(!$stmt->execute()){
   echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
-if(!$stmt->bind_result($id, $name)){
+if(!$stmt->bind_result($id, $reg_name, $rel_name)){
   echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 while($stmt->fetch()){
-  echo "<option value='". $id . "'>". $name . "</option>\n";
-}
-$stmt->close();
-?>
-
-          </select></p>
-          <p>Religion: <select name="religion">
-
-<?php
-if(!($stmt = $mysqli->prepare("SELECT id, name FROM religion"))){
-  echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
-}
-
-if(!$stmt->execute()){
-  echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
-}
-if(!$stmt->bind_result($id, $name)){
-  echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
-}
-while($stmt->fetch()){
-  echo "<option value='". $id . "'>". $name . "</option>\n";
+  echo "<option value ='" . $id . "'>" . $rel_name . " in " . $reg_name . "</option>\n";
 }
 $stmt->close();
 ?>

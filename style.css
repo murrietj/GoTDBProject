@@ -10,12 +10,16 @@ fieldset{
     background-color: lightseagreen;
 }
 
+#MarriagesFS{
+    background-color: #ffff99;
+}
+
 #HouseFS{
     background-color: plum;
 }
 
 #RegionFS{
-    background-color: steelblue;
+    background-color: #5a91bf;
 }
 
 #ReligionFS{
