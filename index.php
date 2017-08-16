@@ -42,6 +42,7 @@ if(!$stmt->execute()){
 if(!$stmt->bind_result($first_name, $last_name, $gender, $house)){
   echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
+
 while($stmt->fetch()){
   echo "<tr>\n<td>" . $first_name . "</td>\n<td>" . $last_name . "</td>\n<td>" . $gender . "</td>\n<td>" . $house . "</td>\n</tr>\n";
 }
