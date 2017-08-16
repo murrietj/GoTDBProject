@@ -16,6 +16,6 @@ if(!($stmt->bind_param("si",$_POST['capital'],$_POST['regionName']))){
 if(!$stmt->execute()){
 	echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
 } else {
-	echo "Updated " . $stmt->affected_rows . " rows from characters.";
+	echo "Updated " . $stmt->affected_rows . " rows from regions.";
 }
 ?>

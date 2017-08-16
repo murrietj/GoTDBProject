@@ -16,6 +16,6 @@ if(!($stmt->bind_param("i",$_POST['name']))){
 if(!$stmt->execute()){
 	echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
 } else {
-	echo "Deleted " . $stmt->affected_rows . " rows from characters.";
+	echo "Deleted " . $stmt->affected_rows . " rows from regions.";
 }
 ?>
