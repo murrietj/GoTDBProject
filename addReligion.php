@@ -7,10 +7,16 @@ if(!$mysqli || $mysqli->connect_errno){
 	echo "Connection error " . $mysqli->connect_errno . " " . $mysqli->connect_error;
 	}
 	
-if(!($stmt = $mysqli->prepare("INSERT INTO religion(name) VALUES (?)"))){
+if(!($stmt = $mysqli->prepare("INSERT INTO religion(name, type) VALUES (?,?)"))){
 	echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
-if(!($stmt->bind_param("s",$_POST['name']))){
+
+if($_POST['name'] == "")
+  $_POST['name'] = NULL;
+if($_POST['type'] == -1)
+  $_POST['type'] = NULL;
+
+if(!($stmt->bind_param("ss",$_POST['name'],$_POST['type']))){
 	echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
 }
 if(!$stmt->execute()){

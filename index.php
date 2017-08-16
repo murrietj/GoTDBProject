@@ -65,7 +65,7 @@ $stmt->close();
               <option value="F">Female</option>
           </select></p>
           <p>House: <select name="House">
-            <option value='-1'>N/A</option>
+			<option value='-1'>N/A</option>
 
 <?php
 if(!($stmt = $mysqli->prepare("SELECT id, name FROM house"))){
@@ -112,14 +112,15 @@ $stmt->close();
 ?>
 
           </select></p>
-          <p>First Name: <input type="text" name="FirstName" /></p>
-          <p>Last Name: <input type="text" name="LastName" /></p>
+          <p>First Name: <input type="text" name="FName" /></p>
+          <p>Last Name: <input type="text" name="LName" /></p>
           <p>Gender: <select name="Gender">
               <option value="M">Male</option>
               <option value="F">Female</option>
           </select></p>
 
           <p>House: <select name="House">
+			<option value='-1'>N/A</option>
 
 <?php
 if(!($stmt = $mysqli->prepare("SELECT id, name FROM house"))){
@@ -325,6 +326,7 @@ $stmt->close();
           <p>Name: <input type="text" name="name" /></p>
           <p>Sigil: <input type="text" name="sigil" /></p>
           <p>Region: <select name="region">
+			<option value='-1'>N/A</option>
 
 <?php
 if(!($stmt = $mysqli->prepare("SELECT id, name FROM region"))){
@@ -455,23 +457,24 @@ $stmt->close();
         <thead>
           <tr>
             <th>Name</th>
+			<th>Type</th>
           </tr>
         </thead>
         <tbody>
 
 <?php
-if(!($stmt = $mysqli->prepare("SELECT name FROM religion"))){
+if(!($stmt = $mysqli->prepare("SELECT name, type FROM religion"))){
   echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
 
 if(!$stmt->execute()){
   echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
-if(!$stmt->bind_result($name)){
+if(!$stmt->bind_result($name, $type)){
   echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 while($stmt->fetch()){
-  echo "<tr>\n<td>" . $name . "</td>\n</tr>\n";
+  echo "<tr>\n<td>" . $name . "</td>\n<td>" . $type . "</td>\n</tr>\n";
 }
 $stmt->close();
 ?>
@@ -482,6 +485,13 @@ $stmt->close();
         <legend>Add</legend>
         <form method="post" action="addReligion.php"> 
           <p>Name: <input type="text" name="name" /></p>
+		  <p>Type: <select name="type">
+			  <option value='-1'>N/A</option> 
+              <option value="Polytheistic">Polytheistic</option>
+              <option value="Monotheistic">Monotheistic</option>
+			  <option value="Monolatristic">Monolatristic</option>
+			  <option value="Henotheistic">Henotheistic</option>
+          </select></p>
           <p><input type="submit" value="Add"/></p>
         </form>
       </fieldset>
@@ -545,7 +555,7 @@ $stmt->close();
           <p>Religion: <select name="religion">
 
 <?php
-if(!($stmt = $mysqli->prepare("SELECT id, name FROM religion"))){
+if(!($stmt = $mysqli->prepare("SELECT id, name  FROM religion"))){
   echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
 

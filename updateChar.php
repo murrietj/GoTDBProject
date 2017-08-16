@@ -10,7 +10,15 @@ if(!$mysqli || $mysqli->connect_errno){
 if(!($stmt = $mysqli->prepare("UPDATE characters SET first_name=?, last_name=?, gender=?, house=? WHERE id=?"))){
 	echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
-if(!($stmt->bind_param("ssssi",$_POST['FirstName'],$_POST['LastName'],$_POST['Gender'],$_POST['House'],$_POST['Character']))){
+
+if($_POST['FName'] == "")
+  $_POST['FName'] = NULL;
+if($_POST['LName'] == "")
+  $_POST['LName'] = NULL;
+if($_POST['House'] == -1)
+  $_POST['House'] = NULL;
+
+if(!($stmt->bind_param("sssii",$_POST['FName'],$_POST['LName'],$_POST['Gender'],$_POST['House'],$_POST['Character']))){
 	echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
 }
 if(!$stmt->execute()){

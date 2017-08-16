@@ -10,6 +10,12 @@ if(!$mysqli || $mysqli->connect_errno){
 if(!($stmt = $mysqli->prepare("INSERT INTO region(name, capital) VALUES (?,?)"))){
 	echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
+
+if($_POST['name'] == "")
+  $_POST['name'] = NULL;
+if($_POST['capital'] == "")
+  $_POST['capital'] = NULL;
+
 if(!($stmt->bind_param("ss",$_POST['name'],$_POST['capital']))){
 	echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
 }

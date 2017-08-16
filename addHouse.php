@@ -10,6 +10,14 @@ if(!$mysqli || $mysqli->connect_errno){
 if(!($stmt = $mysqli->prepare("INSERT INTO house(name, sigil, region) VALUES (?,?,?)"))){
 	echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
+
+if($_POST['name'] == "")
+  $_POST['name'] = NULL;
+if($_POST['sigil'] == "")
+  $_POST['sigil'] = NULL;
+if($_POST['region'] == -1)
+  $_POST['region'] = NULL;
+
 if(!($stmt->bind_param("ssi",$_POST['name'],$_POST['sigil'],$_POST['region']))){
 	echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
 }
