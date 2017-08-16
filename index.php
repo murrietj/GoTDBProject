@@ -25,23 +25,26 @@ if($mysqli->connect_errno){
             <th>First Name</th>
             <th>Last Name</th>
             <th>House</th>
+			<th>Spouse</th>
           </tr>
         </thead>
         <tbody>
 
 <?php
-if(!($stmt = $mysqli->prepare("SELECT characters.first_name, characters.last_name, house.name FROM characters INNER JOIN house ON characters.house = house.id"))){
+if(!($stmt = $mysqli->prepare("SELECT c1.first_name, c1.last_name, h.name, c2.first_name FROM characters c1 
+								LEFT JOIN characters c2 ON c1.spouse = c2.id OR c1.id = c2.spouse
+								INNER JOIN house h ON c1.house = h.id"))){
   echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
 
 if(!$stmt->execute()){
   echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
-if(!$stmt->bind_result($first_name, $last_name, $house)){
+if(!$stmt->bind_result($first_name, $last_name, $house, $spouse)){
   echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 while($stmt->fetch()){
-  echo "<tr>\n<td>" . $first_name . "</td>\n<td>" . $last_name . "</td>\n<td>" . $house . "</td>\n</tr>\n";
+  echo "<tr>\n<td>" . $first_name . "</td>\n<td>" . $last_name . "</td>\n<td>" . $house . "</td>\n<td>" . $spouse . "</td>\n</tr>\n";
 }
 $stmt->close();
 ?>
