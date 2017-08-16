@@ -10,6 +10,14 @@ if(!$mysqli || $mysqli->connect_errno){
 if(!($stmt = $mysqli->prepare("INSERT INTO characters(first_name, last_name, gender, house) VALUES (?,?,?,?)"))){
 	echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
+
+if($_POST['FirstName'] == "")
+  $_POST['FirstName'] = NULL;
+if($_POST['LastName'] == "")
+  $_POST['LastName'] = NULL;
+if($_POST['House'] == -1)
+  $_POST['House'] = NULL;
+
 if(!($stmt->bind_param("sssi",$_POST['FirstName'],$_POST['LastName'],$_POST['Gender'], $_POST['House']))){
 	echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
 }

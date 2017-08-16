@@ -65,6 +65,7 @@ $stmt->close();
               <option value="F">Female</option>
           </select></p>
           <p>House: <select name="House">
+            <option value='-1'>N/A</option>
 
 <?php
 if(!($stmt = $mysqli->prepare("SELECT id, name FROM house"))){
