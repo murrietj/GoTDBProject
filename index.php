@@ -32,7 +32,7 @@ if($mysqli->connect_errno){
 
 <?php
 if(!($stmt = $mysqli->prepare("SELECT first_name, last_name, gender, name FROM characters
-								INNER JOIN house ON characters.house = house.id"))){
+								LEFT JOIN house ON characters.house = house.id"))){
   echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
 
@@ -44,6 +44,10 @@ if(!$stmt->bind_result($first_name, $last_name, $gender, $house)){
 }
 
 while($stmt->fetch()){
+  if(is_null($last_name))
+    $last_name = "N/A";
+  if(is_null($house))
+    $house = "N/A";
   echo "<tr>\n<td>" . $first_name . "</td>\n<td>" . $last_name . "</td>\n<td>" . $gender . "</td>\n<td>" . $house . "</td>\n</tr>\n";
 }
 $stmt->close();
@@ -291,7 +295,7 @@ $stmt->close();
         <tbody>
 
 <?php
-if(!($stmt = $mysqli->prepare("SELECT house.name, house.sigil, region.name FROM house INNER JOIN region ON house.region = region.id"))){
+if(!($stmt = $mysqli->prepare("SELECT house.name, house.sigil, region.name FROM house LEFT JOIN region ON house.region = region.id"))){
   echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
 
@@ -302,6 +306,11 @@ if(!$stmt->bind_result($name, $sigil, $region)){
   echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 while($stmt->fetch()){
+  if(is_null($sigil))
+    $sigil = "N/A";
+  if(is_null($region))
+    $region = "N/A";
+
   echo "<tr>\n<td>" . $name . "</td>\n<td>" . $sigil . "</td>\n<td>" . $region . "</td>\n</tr>\n";
 }
 $stmt->close();
@@ -362,6 +371,8 @@ if(!$stmt->bind_result($name, $capital)){
   echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 while($stmt->fetch()){
+  if(is_null($capital))
+    $capital = "N/A";
   echo "<tr>\n<td>" . $name . "</td>\n<td>" . $capital . "</td>\n</tr>\n";
 }
 $stmt->close();
