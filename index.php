@@ -79,7 +79,6 @@ while($stmt->fetch()){
 $stmt->close();
 ?>
 
-          <option value="">(none)</option>
           </select></p>
           <p>Gender: <select name="gender">
               <option value="*">(all)</option>
@@ -106,7 +105,6 @@ while($stmt->fetch()){
 $stmt->close();
 ?>
 
-          <option value="">(none)</option>
           </select></p>
           <p><input type="submit" value="Run Filter" /></p>
         </form>
@@ -529,6 +527,8 @@ if(!$stmt->bind_result($name, $type)){
   echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 while($stmt->fetch()){
+  if(is_null($type))
+    $type = "N/A";
   echo "<tr>\n<td>" . $name . "</td>\n<td>" . $type . "</td>\n</tr>\n";
 }
 $stmt->close();
